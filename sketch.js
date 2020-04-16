@@ -11,31 +11,22 @@ function setup() {
   }
 }
 
-function draw(){
+function draw() {
   background(0);
 
-  for (var i = 0; i < viruses.length; i++) {
-    if(human.hits(viruses[i])){
+  for (var i = viruses.length - 1; i >= 0; i--) {
+    if (human.hits(viruses[i]) && viruses[i].r > 10) {
       console.log('oops')
-      viruses[i].breakup();
+      var newViruses = viruses[i].breakup();
+      viruses.splice(i, 1);
+      viruses = viruses.concat(newViruses);
+      viruses.push(new Virus());
     }
-
-    for (var j = viruses.length-1; j >= 0; j--) {
-      if(human.hits(viruses[j])){
-        if(viruses[j].r > 12){
-          var newViruses = viruses[j].breakup();
-          viruses = viruses.concat(newViruses);
-        }
-        viruses.splice(j, 1);
-        //break;
-      }
-    }
-
-
-    viruses[i].render();
-    viruses[i].update();
-    viruses[i].edges();
-
+    if (viruses[0]) {
+     viruses[i].render();
+     viruses[i].update();
+     viruses[i].edges();
+   }
   }
   human.render();
 }
